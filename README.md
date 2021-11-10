@@ -12,4 +12,5 @@ npm install
 ### Running the app
 
 npm start
+
 Open a browswer window and navigate to http://localhost:3000/viewer.html
