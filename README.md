@@ -13,4 +13,4 @@ npm install
 
 npm start
 
-Open a browswer window and navigate to http://localhost:3000/viewer.html
+Open a browser window and navigate to http://localhost:3000/viewer.html
