@@ -1,8 +1,10 @@
-class CsManagerClient {
+var modelFileManager = null;
+
+class ModelFileManager {
 
 
     static msready() {
-        csManagerClient = new CsManagerClient();    
+        modelFileManager = new ModelFileManager();    
     }
 
     constructor() {
@@ -36,15 +38,14 @@ class CsManagerClient {
     async _updateModelTable(modelnames)
     { 
         this._modelTable.clearData();
-        for (var i=0;i<modelnames.length;i++)
+        for (let i=0;i<modelnames.length;i++)
         { 
         
             let image = await fetch(serveraddress + '/api/png/' + modelnames[i]);
-            let imageblow = await image.blob();
             let urlCreator = window.URL || window.webkitURL;
-            let part = urlCreator.createObjectURL(imageblow);                
+            let imageurl = urlCreator.createObjectURL(await image.blob());                
            
-            let prop = {image:part, name: modelnames[i]};
+            let prop = {image:imageurl, name: modelnames[i]};
             this._modelTable.addData([prop], false);
         }
     }
