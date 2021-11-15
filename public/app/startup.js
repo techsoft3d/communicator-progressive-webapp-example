@@ -1,5 +1,5 @@
 let csManagerClient;
-const serveraddress = "http://localhost:3000";
+const serveraddress = window.location.origin;
 
 function setupTutorial() {
 

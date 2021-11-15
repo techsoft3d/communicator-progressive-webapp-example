@@ -2,14 +2,12 @@ class CsManagerClient {
 
 
     static msready() {
-        csManagerClient = new CsManagerClient();
-    
+        csManagerClient = new CsManagerClient();    
     }
 
     constructor() {
-        this._updatedTime = null;
 
-        var _this = this;
+        let _this = this;
 
         this._modelTable = new Tabulator("#modeltable", {
             layout: "fitColumns",
@@ -23,39 +21,38 @@ class CsManagerClient {
             ],
         });
         
-        this._checkForNewModels();
-       
+        this._getModelList();       
     }
 
 
-    async _checkForNewModels() {
+    async _getModelList() {
         let res = await fetch(serveraddress + '/api/models');
         let data = await res.json();
 
-        await this._updateModelList(data);
+        await this._updateModelTable(data);
 
     }
 
-    async _updateModelList(data)
+    async _updateModelTable(modelnames)
     { 
         this._modelTable.clearData();
-        for (var i=0;i<data.length;i++)
+        for (var i=0;i<modelnames.length;i++)
         { 
         
-            let image = await fetch(serveraddress + '/api/png/' + data[i]);
+            let image = await fetch(serveraddress + '/api/png/' + modelnames[i]);
             let imageblow = await image.blob();
             let urlCreator = window.URL || window.webkitURL;
             let part = urlCreator.createObjectURL(imageblow);                
            
-            let prop = {image:part, name: data[i]};
+            let prop = {image:part, name: modelnames[i]};
             this._modelTable.addData([prop], false);
         }
     }
 
-    async _loadNewModel(modelid)
+    async _loadNewModel(modelname)
     { 
         await hwv.model.clear();
-        let res = await fetch(serveraddress + "/api/scs/" + modelid);
+        let res = await fetch(serveraddress + "/api/scs/" + modelname);
         let buffer = await res.arrayBuffer();
         let byteArray = new Uint8Array(buffer);
         hwv.model.loadSubtreeFromScsBuffer(hwv.model.getRootNode(), byteArray);
